@@ -68,7 +68,8 @@ new Vue({
       if(user) {
         Vue.prototype.$user = user;
         //console.log("user main "+this.$user);
-      	if(user.uid === '59eiDrT3nRWyAkHlqigoze4tSiC3'){
+        var admin = ['abula3003@gmail.com'];
+      	if(admin.includes( user.email)){
         this.$router.push('/')
       	}else{
       	this.logOut();
