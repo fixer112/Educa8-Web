@@ -1,6 +1,6 @@
 <template>
   <div class="col-md-8 mx-auto">
-  	<form @submit="checkForm">
+  	<form @submit.prevent="checkForm">
 
     <div class="form-group">
         <label>SSCE</label>
@@ -25,8 +25,8 @@
         <label>Subject</label>
         <select type="option" class="form-control" v-model="subject">
         <option disabled selected>Choose Subject</option>
-        <template v-if="category" v-for="sub in subjects[category]">
-        <option :value="sub">{{sub.toUpperCase()}}</option>
+        <template v-if="category" >
+        <option v-for="(sub, index) in subjects[category]" :value="sub" :key="index">{{sub.toUpperCase()}}</option>
         </template>
         </select>
     </div>
@@ -46,7 +46,7 @@
     <p>
   	    <b>Please correct the following error(s):</b>
   	    <ul>
-  	      <li v-for="error in errors">{{ error }}</li>
+  	      <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
   	    </ul>
   	  </p>
   	 </div>

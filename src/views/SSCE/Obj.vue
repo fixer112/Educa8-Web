@@ -4,11 +4,22 @@
    <button class="btn btn-success btn-top" @click="add"><em class="fa fa-plus"></em> ADD</button>
    <button class="btn btn-primary btn-top" @click="getQuestions"><em class="fa fa-refresh"></em> RELOAD</button>
 
+   <!-- <p class="t-ques">{{allQuestions.length}}</p> -->
+   <button class="btn btn-secondary btn-circle margin" type="button">{{allQuestions.length}}</span></button>
+
    <div>
+    <div class="btn-group">
+      <button type="button" class="btn btn-danger" @click="subYear">Year -</button>
+      <button type="button" class="btn btn-secondary">{{year}}</button>
+      <button type="button" class="btn btn-success" @click="addYear">Year +</button>
+    </div>
+    <div>
+      
+    </div>
      <!--  <p v-for="(ques, index) in allQuestions">{{ques.Question}}</p> -->
      <div id="accordion" style="margin-top: 30px;">
 
-      <div class="card question" v-for="(ques, index) in allQuestions">
+      <div class="card question" v-for="(ques, index) in allQuestions" :key="index">
         <div class="card-header" :id="'heading'+index">
           <h5 class="mb-0">
             <div class="ques-head">
@@ -16,7 +27,7 @@
                 {{index+1}} {{ques.Question}}
               </h6>
             </div>
-            <h6 style="float: right;">{{ques.time}}</h6>
+            <p style="float: right;font-size: 10px">{{ques.time}}</p>
           </h5>
         </div>
 
@@ -45,6 +56,10 @@
 
               <p class="correct">
                 Correct Ans: {{ques.Correct}}
+              </p>
+
+              <p class="No">
+                Question No: {{ques.No}}
               </p>
             </div>
           </div>
@@ -95,11 +110,16 @@
           </select>
         </div>
 
+        <div class="form-group">
+          <label>Question Number</label>
+          <input type="number" class="form-control" v-model="No"/>
+        </div>
+
         <div class="alert alert-danger" v-if="errors.length">
           <p>
             <b>Please correct the following error(s):</b>
             <ul>
-              <li v-for="error in errors">{{ error }}</li>
+              <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
             </ul>
           </p>
         </div>
@@ -136,6 +156,8 @@
         correct:"",
         img:null,
         doc:"",
+        year:"",
+        No:"",
       };
     },
     computed:{
@@ -143,7 +165,7 @@
     },
     methods:{
 resetAll(){
-  this.question = this.A = this.B = this.C = this.D = this.correct = this.doc = "";
+  this.question = this.A = this.B = this.C = this.D = this.correct = this.doc = this.No ="";
   this.img = null;
 },
 add(){
@@ -160,6 +182,7 @@ edit(ques){
   this.correct = ques.Correct;
   this.img = ques.img;
   this.doc = ques.id;
+  this.No = ques.No;
   this.$modal.show('add');
   this.action = "edit";
   //console.log(this.doc);
@@ -170,7 +193,7 @@ close(){
 checkForm: function (e) {
   this.errors = [];
 
-  if (!this.question||!this.A||!this.B||!this.D||!this.correct) {
+  if (!this.question||!this.A||!this.B||!this.C||!this.D||!this.No||!this.correct) {
     this.errors.push('Fill Required Fields');
     return;
   }
@@ -191,6 +214,7 @@ addObj(){
     B: this.B,
     C: this.C,
     D: this.D,
+    No:this.No,
     Correct: this.correct,
     timestamp: this.$firebase.firestore.FieldValue.serverTimestamp()
   }
@@ -229,7 +253,7 @@ addObj(){
    snapshot.forEach(doc => {
           //console.log(doc.id);
           var date = new Date(doc.data().timestamp.seconds*1000).toGMTString();
-          var obj  = {id:doc.id, Question:doc.data().Question, A:doc.data().A, B:doc.data().B, C:doc.data().C, D:doc.data().D, Correct:doc.data().Correct, time:date, img:doc.data().quesImg};
+          var obj  = {id:doc.id, Question:doc.data().Question, A:doc.data().A, B:doc.data().B, C:doc.data().C, D:doc.data().D, Correct:doc.data().Correct, time:date, img:doc.data().quesImg,No:doc.data().No};
           questions.push(obj);
            //questions[doc.id] = obj;
            //console.log(new Date(doc.data().timestamp.seconds*1000).toGMTString());
@@ -253,6 +277,7 @@ editObj(){
     B: this.B,
     C: this.C,
     D: this.D,
+    No: this.No,
     Correct: this.correct,
     timestamp: this.$firebase.firestore.FieldValue.serverTimestamp()
   }
@@ -301,7 +326,7 @@ deleteQues(id){
       title:"Delete successful",
       text:"Question deleted with ID: "+id,
       position:'top right',
-      type:'success'
+      type:'success',
     });
 
     _this.resetAll();
@@ -316,6 +341,26 @@ deleteQues(id){
       type:'error'
     });
   });
+},
+getYear(){
+this.year = this.$route.query.head.match(/\d+/)[0];
+return this.year;
+},
+addYear(){
+  var year = this.getYear();
+  this.year = parseInt(year) + 1;
+  this.$route.query.head = this.$route.query.head.replace(year, this.year);
+  this.$root.head = this.$route.query.head;
+  this.getQuestions();
+  console.log(this.$route.query.head);
+},
+subYear(){
+  var year = this.getYear();
+  this.year = parseInt(year) - 1;
+  this.$route.query.head = this.$route.query.head.replace(year, this.year);
+  this.$root.head = this.$route.query.head;
+  this.getQuestions();
+  console.log(this.$route.query.head);
 }
 },
 watch:{
@@ -323,6 +368,8 @@ watch:{
 },
 created(){
   this.getQuestions();
+  this.getYear();
+  
 }
 };
 </script>
@@ -330,5 +377,8 @@ created(){
 .add-obj{
   margin-top:30px;
   margin-bottom: 30px;
+}
+.t-ques{
+  float: right;
 }
 </style>

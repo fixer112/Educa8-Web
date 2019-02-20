@@ -6,7 +6,6 @@ import SSCE from "./views/SSCE.vue";
 import Obj from "./views/SSCE/Obj.vue";
 
 Vue.use(Router);
-
 Vue.mixin({
  data() {
     return {
@@ -23,21 +22,12 @@ methods:{
   }
 },
   mounted(){
-  //this.changeTitle();
-  /*this.user = this.$firebase.auth().currentUser; 
-  if(this.user) { 
-    this.phoneNumber = this.user.phoneNumber
-    this.name = this.user.displayName; 
-    this.email = this.user.email;
-    this.photo = this.user.photoURL; 
-    this.userId = this.user.uid; 
-  } 
-  console.log("user "+JSON.stringify(this.$firebase.auth().currentUser));*/
 },
 updated(){
 
 },
 created(){
+
 
  // }
 }
@@ -72,14 +62,14 @@ export default new Router({
       name: "obj",
       component: Obj,
     },
-    {
+   /* {
       path: "/about",
       name: "about",
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
-    }
+        import("./views/About.vue")
+    }*/
   ]
 });

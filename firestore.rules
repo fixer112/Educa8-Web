@@ -2,7 +2,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
       allow read;
-      allow create, update, delete, write : if request.auth.token.email in ['abula3003@gmail.com'];
+      allow create, update, delete, write : if request.auth.token.email in ['abula3003@gmail.com', 'ayblinxx2013@gmail.com','scopeman8@gmail.com'];
     }
   }
 }

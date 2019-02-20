@@ -1,31 +1,26 @@
 <template lang="html">
   
-  <div class="container-scroller">
-    <div class="container-fluid page-body-wrapper full-page-wrapper auth-page">
-      <div class="content-wrapper d-flex align-items-center auth auth-bg-1 theme-one">
-        <div class="row w-100">
-          <div class="col-lg-4 mx-auto">
-            <div class="auto-form-wrapper">
-              <div id="firebaseui-auth-container"></div>
+  <div>
+    <section class="h-100">
+    <div class="container h-100">
+      <div class="row justify-content-md-center h-100">
+        <div class="card-wrapper">
+          <!-- <div class="brand">
+            <img src="img/logo.jpg">
+          </div> -->
+          <div class="card fat">
+            <div class="card-body">
+             <!--  <h4 class="card-title">Login</h4> -->
+             <div id="firebaseui-auth-container"></div>
             </div>
-            <ul class="auth-footer">
-              <!-- <li>
-                <a href="#">Conditions</a>
-              </li>
-              <li>
-                <a href="#">Help</a>
-              </li>
-              <li>
-                <a href="#">Terms</a>
-              </li> -->
-            </ul>
-            <!-- <p class="footer-text text-center">copyright © 2018 Bootstrapdash. All rights reserved.</p> -->
+          </div>
+          <div class="footer">
+            Copyright &copy; 2017 &mdash; Your Company 
           </div>
         </div>
       </div>
-      <!-- content-wrapper ends -->
     </div>
-    <!-- page-body-wrapper ends -->
+  </section>
   </div>
 </template>
 <script>
@@ -59,9 +54,6 @@ export default {
     },
 }
 </script>
-<style>
-/*body {
-  background-image: url("/images/login.jpg");
-}*/
-
+<style lang="scss">
+@import '../assets/css/my-login.css';
 </style>

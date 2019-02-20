@@ -21,54 +21,40 @@ Vue.prototype.$firebaseui = firebaseui;
 Vue.component('Layout', Layout);
 Vue.component('Login', Login);
 
+Vue.mixin({
+  data () {
+    return {
+    };
+   
+  },
+  methods:{
+    changeHead(){
+    this.$root.head = this.$route.meta.head? this.$route.meta.head.toUpperCase() : this.$route.query.head.toUpperCase() ;
+  },
+  }
+});
 
 new Vue({
   router,
+  data () {
+    return {
+      head:'',
+    };
+   
+  },
   created() {
     firebase.initializeApp(config);
     Vue.prototype.$db = firebase.firestore();
     this.$db.settings({
       timestampsInSnapshots: true
     });
-    var docRef = this.$db.collection("Category").doc("SSCE").collection("General").doc("Biology").collection("Objectiive");
-
-    //var docRef = db.collection("category/SSCE/General/Biology/Objective/1");
-
-    /*docRef.add({
-    Question: "What is a cell?",
-    A: "unit of life",
-    B: "unit of man",
-    C: "unit of woman",
-    D: "Non of the above",
-    Correct: "unit of life",
-    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });*/
-
-    /*docRef.set({
-    Question: "What is a cell?",
-    A: "unit of life",
-    B: "unit of man",
-    C: "unit of woman",
-    D: "Non of the above",
-    Correct: "unit of life",
-    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    });*/
-
-    /*docRef.get().then(function(doc) {
-        if (doc.exists) {
-            console.log("Document data:", doc.data());
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
-    }).catch(function(error) {
-        console.log("Error getting document:", error);
-    });*/
+    
     firebase.auth().onAuthStateChanged((user) => {
       if(user) {
         Vue.prototype.$user = user;
+        window.user = user;
         //console.log("user main "+this.$user);
-        var admin = ['abula3003@gmail.com'];
+        var admin = ['abula3003@gmail.com','ayblinxx2013@gmail.com','scopeman8@gmail.com'];
       	if(admin.includes( user.email)){
         this.$router.push('/')
       	}else{
@@ -83,7 +69,8 @@ new Vue({
     methods:{
     logOut() { 
     this.$firebase.auth().signOut();
-  }
+  },
+  
 },
   render: h => h(App)
 }).$mount("#app");
